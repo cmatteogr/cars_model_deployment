@@ -1,9 +1,27 @@
-from pydantic import BaseModel, Field, StrictStr
+from typing import List
+from pydantic import BaseModel
+
+
+class CarData(BaseModel):
+    msrp: int
+    year: int
+    model: str
+    interior_color: str
+    drivetrain: str
+    mileage: int
+    make: str
+    bodystyle: str
+    cat: str
+    fuel_type: str
+    stock_type: str
+    exterior_color: str
 
 
 class PredictRequest(BaseModel):
-    input_text: StrictStr = Field(..., title="input_text", description="Input text", example="Input text for ML")
+    model_type: str
+    cars_data: List[CarData]
+    cars_real_price: List[int]
 
 
 class PredictResponse(BaseModel):
-    result: float = Field(..., title="result", description="Predict value", example=5000)
+    result: List[float]

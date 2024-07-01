@@ -1,7 +1,6 @@
 from abc import ABC, abstractmethod
 from typing import Any
 from keras.models import load_model
-import joblib
 import os
 from pycaret.regression import load_model
 from catboost import CatBoostRegressor
@@ -9,8 +8,6 @@ import pickle
 import torch
 import tensorflow as tf
 from sklearn.ensemble import RandomForestRegressor
-import json
-import pandas as pd
 
 
 class BaseMLModel(ABC):
@@ -31,12 +28,7 @@ class MLModel(BaseMLModel):
         self.model = self._load_model(model_path)
         self.model_path = model_path
 
-    def predict(self, input_text: str) -> float:
-        # Transform text to json to df
-        data_dict = json.loads(input_text)
-        # Convert dictionary to DataFrame
-        cars_df = pd.DataFrame(data_dict)
-        # NOTE: APPLY PREPROCESS
+    def predict(self, cars_df) -> [float]:
 
         # Apply prediction
         match self.model_tool:
@@ -45,8 +37,7 @@ class MLModel(BaseMLModel):
             case 'catboost':
                 y_pred = self.model.predict(cars_df.values)
             case 'automl':
-                predictions_df = self.model.predict(cars_df)
-                y_pred = predictions_df['prediction_label'].values
+                y_pred = self.model.predict(cars_df)
             case 'neural_network_tensorflow':
                 y_pred = self.model.predict(cars_df, verbose=0)
             case 'neural_network_pytorch':
@@ -57,7 +48,7 @@ class MLModel(BaseMLModel):
                 y_pred = self.model(X_tensor)
                 y_pred = y_pred.detach().numpy()
             case _:
-                raise Exception(f"Invalid Testing model: {input_text}")
+                raise Exception(f"Invalid Testing model: {self.model_tool}")
         return y_pred
 
     def _load_model(self, model_path: str) -> Any:

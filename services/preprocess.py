@@ -74,7 +74,7 @@ def get_interior_color_phrase_vector(interior_color_phrase, model):
 
 def map_drivetrain(drivetrain):
     """
-    Group the drive trian by categories
+    Group the drive train by categories
 
     :param drivetrain: Car drive train
 
@@ -112,7 +112,7 @@ def clean_cat(cat):
     return cat
 
 
-# Calculate the vectors feature avegare
+# Calculate the vectors feature average
 def get_cat_phrase_vector(cat_phrase, model):
     cat_words = cat_phrase.split()
     cat_word_vectors = [model.wv[word] for word in cat_words if word in model.wv]
@@ -128,7 +128,7 @@ def map_fuel_type(fuel_type):
 
     :param fuel_type: Car fuel type
 
-    :return Fuel type category
+    :return: Fuel type category
     """
     if pd.isna(fuel_type):
         return np.nan
@@ -153,7 +153,7 @@ def map_stock_type(stock_type):
 
     :param stock_type: stock type New/Used
 
-    :return Binary stock_type
+    :return: Binary stock_type
     """
     if pd.isna(stock_type):
         return np.nan
@@ -198,8 +198,6 @@ def preprocess(cars_df, make_valid_categories, hasher_model_model: FeatureHasher
     """
     print("Star Inference preprocess")
 
-    print("####### Validate data")
-    print("Validate dataset before preprocessing")
     # Check if dataframe has the columns needed
     assert set(cars_df.columns) == set(RELEVANT_PREPROCESS_COLUMNS), 'Input has invalid columns'
     # Validate features
@@ -210,13 +208,10 @@ def preprocess(cars_df, make_valid_categories, hasher_model_model: FeatureHasher
         if not cars_df['make'].isin(make_valid_categories).all():
             raise Exception(f"No valid make: {make_valid_categories}")
 
-    print("####### Transform data")
     # ### Apply Features transformation
     # Apply msrp transformation
-    print("Apply msrp transformation")
     cars_df['msrp'] = cars_df['msrp'].map(map_msrp)
     # Apply model transformation
-    print("Apply model transformation")
     cars_model_hashed = hasher_model_model.transform(cars_df['model'].apply(lambda x: {x: 1}).tolist())
     # Generate model hashed dataframe
     cars_model_hashed_df = pd.DataFrame(cars_model_hashed.toarray(),
@@ -225,7 +220,6 @@ def preprocess(cars_df, make_valid_categories, hasher_model_model: FeatureHasher
     cars_df = pd.concat([cars_df, cars_model_hashed_df], axis=1)
 
     # Apply exterior_color transformation
-    print("Apply exterior_color transformation")
     # Apply lower case and remove special characters
     cars_df['exterior_color'] = cars_df['exterior_color'].apply(clean_exterior_color)
     # Calculate the vector for each interior color
@@ -244,7 +238,6 @@ def preprocess(cars_df, make_valid_categories, hasher_model_model: FeatureHasher
     cars_df = pd.concat([cars_df, cars_exterior_color_df], axis=1)
 
     # Apply interior_color transformation
-    print("Apply interior_color transformation")
     # Apply lower case and remove special characters
     cars_df['interior_color'] = cars_df['interior_color'].apply(clean_interior_color)
     # Calculate the vector for each interior color
@@ -263,7 +256,6 @@ def preprocess(cars_df, make_valid_categories, hasher_model_model: FeatureHasher
     cars_df = pd.concat([cars_df, cars_interior_color_df], axis=1)
 
     # Apply drive train transformation
-    print("Apply drivetrain transformation")
     cars_df['drivetrain'] = cars_df['drivetrain'].map(map_drivetrain)
     # Transform the data
     cars_drivetrain_encoded_data = drivetrain_encoder.transform(cars_df[['drivetrain']])
@@ -275,7 +267,6 @@ def preprocess(cars_df, make_valid_categories, hasher_model_model: FeatureHasher
     cars_df = pd.concat([cars_df, cars_drivetrain_encoded_df], axis=1)
 
     # Apply make transformation
-    print("Apply make transformation")
     # Fit and transform the data
     cars_make_encoded_data = make_encoder.transform(cars_df[['make']])
     # Convert the drivetrain encoded data into a DataFrame
@@ -285,9 +276,8 @@ def preprocess(cars_df, make_valid_categories, hasher_model_model: FeatureHasher
     cars_df = pd.concat([cars_df, cars_make_encoded_df], axis=1)
 
     # Apply bodystyle transformation
-    print("Apply bodystyle transformation")
     # Fit and transform the data
-    cars_bodystyle_encoded_data = bodystyle_encoder.fit_transform(cars_df[['bodystyle']])
+    cars_bodystyle_encoded_data = bodystyle_encoder.transform(cars_df[['bodystyle']])
     # Convert the drivetrain encoded data into a DataFrame
     cars_bodystyle_encoded_df = pd.DataFrame(cars_bodystyle_encoded_data,
                                              columns=bodystyle_encoder.get_feature_names_out(['bodystyle']),
@@ -296,10 +286,9 @@ def preprocess(cars_df, make_valid_categories, hasher_model_model: FeatureHasher
     cars_df = pd.concat([cars_df, cars_bodystyle_encoded_df], axis=1)
 
     # Apply cat transformation
-    print("Apply cat transformation")
     # Apply lower case and remove special characters
     cars_df['cat'] = cars_df['cat'].apply(clean_cat)
-    # Calculate the vertor for each cat
+    # Calculate the vector for each cat
     cars_cat_vectors_s = cars_df['cat'].apply(lambda ic: get_cat_phrase_vector(ic, w2v_cat))
     # Replace the nan values with an array of (0,0,0)
     base_invalid_value = [0] * cat_vector_size
@@ -312,7 +301,6 @@ def preprocess(cars_df, make_valid_categories, hasher_model_model: FeatureHasher
     cars_df = pd.concat([cars_df, cars_cat_data], axis=1)
 
     # Apply fuel type transformation
-    print("Apply fuel_type transformation")
     cars_df['fuel_type'] = cars_df['fuel_type'].map(map_fuel_type)
 
     # Encode OneHotEncoder drivetrain
@@ -325,7 +313,6 @@ def preprocess(cars_df, make_valid_categories, hasher_model_model: FeatureHasher
     cars_df = pd.concat([cars_df, cars_fuel_type_encoded_df], axis=1)
 
     # Apply binary transformation
-    print("Apply stock_type transformation")
     cars_df['stock_type'] = cars_df['stock_type'].map(map_stock_type)
 
     # Remove transformed columns
@@ -333,25 +320,19 @@ def preprocess(cars_df, make_valid_categories, hasher_model_model: FeatureHasher
         columns=['model', 'exterior_color', 'interior_color', 'drivetrain', 'make', 'bodystyle', 'cat', 'fuel_type'],
         inplace=True)
 
-    print("####### Imputate missing data")
-    print("Apply Iterative imputation")
     # Apply imputation
     cars_df_trans = imputer.transform(cars_df)
     # transform the dataset
     cars_df = pd.DataFrame(cars_df_trans, columns=cars_df.columns, index=cars_df.index)
 
-    print("####### Detect outliers data")
     # ### Outliers Detection
-    print("Apply Outlier Detection")
     # Remove outliers
     cars_outliers_s = iso_forest.predict(cars_df)
-    if cars_outliers_s.shape[0] > 0:
+    if len(list(filter(lambda x: x != 1, cars_outliers_s))) > 0:
         print(f"There are {cars_outliers_s.shape[0]} outliers instances as input, the accuracy could decrease")
 
     # Scale data if needed
     if scale_data:
-        print("####### Scale data")
-        print("Apply Scale Min/Max Transformation")
         # Apply scale transformation
         cars_df_trans = scaler.transform(cars_df)
         # transform the dataset
