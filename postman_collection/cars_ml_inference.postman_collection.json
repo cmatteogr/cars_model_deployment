@@ -1,0 +1,43 @@
+{
+	"info": {
+		"_postman_id": "93bc6c0a-9573-4601-a6f3-3e0e7889bfd1",
+		"name": "cars_ml_inference",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "6224532"
+	},
+	"item": [
+		{
+			"name": "predict_car_price",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"model_type\":\"neural_network_pytorch\",\r\n    \"cars_data\":\r\n    [\r\n        {\r\n            \"msrp\":57215,\r\n            \"year\":2024,\r\n            \"model\":\"Blazer EV\",\r\n            \"interior_color\":\"Black\",\r\n            \"drivetrain\":\"All-wheel Drive\",\r\n            \"mileage\":0,\r\n            \"make\":\"Chevrolet\",\r\n            \"bodystyle\":\"SUV\",\r\n            \"cat\":\"ev_crossover_midsize\",\r\n            \"fuel_type\":\"Electric\",\r\n            \"stock_type\":\"New\",\r\n            \"exterior_color\":\"Sterling Gray Metallic\"\r\n        },\r\n        {\r\n            \"msrp\":50185,\r\n            \"year\":2024,\r\n            \"model\":\"Hornet\",\r\n            \"interior_color\":\"Black\",\r\n            \"drivetrain\":\"All-wheel Drive\",\r\n            \"mileage\":16,\r\n            \"make\":\"Dodge\",\r\n            \"bodystyle\":\"SUV\",\r\n            \"cat\":\"hybrid_suv\",\r\n            \"fuel_type\":\"Hybrid\",\r\n            \"stock_type\":\"New\",\r\n            \"exterior_color\":\"Blue Steel\"\r\n        },\r\n        {\r\n            \"msrp\":30946,\r\n            \"year\":2024,\r\n            \"model\":\"Jetta\",\r\n            \"interior_color\":\"Volcano Brown\",\r\n            \"drivetrain\":\"Front-wheel Drive\",\r\n            \"mileage\":1,\r\n            \"make\":\"Volkswagen\",\r\n            \"bodystyle\":\"Sedan\",\r\n            \"cat\":\"sedan_compact\",\r\n            \"fuel_type\":\"Gasoline\",\r\n            \"stock_type\":\"New\",\r\n            \"exterior_color\":\"Deep Black Pearl Effect\"\r\n        },\r\n        {\r\n            \"msrp\":0,\r\n            \"year\":2021,\r\n            \"model\":\"F-150\",\r\n            \"interior_color\":\"Black\\/Medium Dark Slate\",\r\n            \"drivetrain\":\"Four-wheel Drive\",\r\n            \"mileage\":27667,\r\n            \"make\":\"Ford\",\r\n            \"bodystyle\":\"Pickup Truck\",\r\n            \"cat\":\"truck_fullsize\",\r\n            \"fuel_type\":\"Gasoline\",\r\n            \"stock_type\":\"Used\",\r\n            \"exterior_color\":\"Oxford White\"\r\n        }\r\n    ],\r\n    \"cars_real_price\":[\r\n        54595,\r\n        40185,\r\n        29911,\r\n        36000\r\n    ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://0.0.0.0:8001/api/v1/predict",
+					"protocol": "http",
+					"host": [
+						"0",
+						"0",
+						"0",
+						"0"
+					],
+					"port": "8001",
+					"path": [
+						"api",
+						"v1",
+						"predict"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
