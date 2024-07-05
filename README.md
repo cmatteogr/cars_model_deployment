@@ -6,7 +6,7 @@ Once the model is trained with good performance metrics as a result, then it's t
 
 Our use case is the [Cars Price Prediction - US Market](https://github.com/cmatteogr/cars_ml_project), the models trained from this stages are used for the inference (Random Forest, CatBoost, AutoML, Neural Networs), that way we can check the different inference challenges: Infrastructure, Cost, Latency, Size, etc.
 
-## Requirements
+## Prerequisites
 * Install Python 3.11
 * Install the libraries using requirements.txt.
 * Add the trained models generated from [Cars Price Prediction - US Market](https://github.com/cmatteogr/cars_ml_project) in the ml_model folder, include the preprocess models and model_data.json file
