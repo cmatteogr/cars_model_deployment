@@ -15,7 +15,7 @@ Our use case is the [Cars Price Prediction - US Market](https://github.com/cmatt
 ## Usage
 Execute the script main.py to start the service, it will read the preprocess and prediction models/configurations to start the model inference. Once the model is started, use the Postman service to execute the model inference (service) and get the predicted cars prices.
 
-## External Resoruces
+## External Resources 
 This project was built by the Medellín Machine Learning - Study Group (MML-SG) community. In the following [link](https://drive.google.com/drive/u/0/folders/1nPMtg6caIef5o9S_J8WyNEvyEt5sO1VH) you can find the meetings records about it:
 * [15. Integración de Autoencoders en el Pipeline de Predicción de Precios de Carros (2024-06-18 19:12 GMT-5)](https://drive.google.com/file/d/1IaGO2UB1eqnhjdQbupemnm7UDYJMrgEK/view?usp=drive_link)
 * [16. Despliegue de Autoencoders para la Detección de Anomalías en Producción (2024-07-03 19:07 GMT-5)](https://drive.google.com/file/d/15D_1P1UFRcdEv_bdBO7iOCbk1sfSyRVH/view?usp=drive_link)
